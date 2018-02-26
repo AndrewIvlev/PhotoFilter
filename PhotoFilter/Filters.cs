@@ -57,6 +57,34 @@ namespace PhotoFilter
             return resultColor;
         }
     };
+    class Sepia : Filters
+    {
+        protected override Color calculateNewPixelColor(Bitmap sourceImage, int x, int y)
+        {
+            int k = 44;
+            Color sourceColor = sourceImage.GetPixel(x, y);
+            Color resultColor = Color.FromArgb(
+                 Clamp((int)(0.36 * sourceColor.R + 0.53 * sourceColor.G + 0.11 * sourceColor.B + 2 * k), 0, 255),
+                  Clamp((int)(0.36 * sourceColor.R + 0.53 * sourceColor.G + 0.11 * sourceColor.B + 0.5 * k), 0, 255),
+                   Clamp((int)(0.36 * sourceColor.R + 0.53 * sourceColor.G + 0.11 * sourceColor.B - k), 0, 255)
+                   );
+            return resultColor;
+        }
+    };
+    class Brightness : Filters
+    {
+        protected override Color calculateNewPixelColor(Bitmap sourceImage, int x, int y)
+        {
+            int b = 66;
+            Color sourceColor = sourceImage.GetPixel(x, y);
+            Color resultColor = Color.FromArgb(
+                 Clamp(b + sourceColor.R, 0, 255),
+                  Clamp(sourceColor.G + b, 0, 255),
+                   Clamp(b + sourceColor.B, 0, 255)
+                   );
+            return resultColor;
+        }
+    };
     class MatrixFilter : Filters
     {
         protected float[,] kernel = null;
@@ -121,6 +149,23 @@ namespace PhotoFilter
         public GaussianFilter()
         {
             createGaussianKernel(3, 2);
+        }
+    };
+    class SobelFilter : MatrixFilter
+    {
+        public SobelFilter(bool f)
+        {
+            if (f)
+                kernel = new float[3, 3] { { -1, -2, -1 }, { 0, 0, 0 }, { 1, 2, 1 } };
+            else
+                kernel = new float[3, 3] { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 1 } };
+        }
+    };
+    class Sharpen : MatrixFilter
+    {
+        public Sharpen()
+        {
+                kernel = new float[3, 3] { { 0, -1, 0 }, { -1, 5, -1 }, { 0, -1, 0 } };
         }
     };
 }
