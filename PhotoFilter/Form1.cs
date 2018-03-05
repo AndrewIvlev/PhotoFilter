@@ -137,5 +137,29 @@ namespace PhotoFilter
             Filters filter = new Sharpen();
             backgroundWorker1.RunWorkerAsync(filter);
         }
+
+        private void резкостьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new Sharp();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void тиснениеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new Tisnenie();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void ПрюиттапоОсиYToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new Pruitt(true);
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void ПрюиттапоОсиXToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Filters filter = new Pruitt(false);
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
     }
 }

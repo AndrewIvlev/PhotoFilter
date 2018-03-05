@@ -161,11 +161,35 @@ namespace PhotoFilter
                 kernel = new float[3, 3] { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 1 } };
         }
     };
+    class Pruitt: MatrixFilter
+    {
+        public Pruitt(bool f)
+        {
+            if (f)
+                kernel = new float[3, 3] { { -1, -2, -1 }, { 0, 0, 0 }, { 1, 2, 1 } };
+            else
+                kernel = new float[3, 3] { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 1 } };
+        }
+    };
+    class Tisnenie : MatrixFilter
+    {
+        public Tisnenie()
+        {
+            kernel = new float[3, 3] { { 0, 1, 0 }, { 1, 0, -1 }, { 0, -1, 0 } };
+        }
+    };
     class Sharpen : MatrixFilter
     {
         public Sharpen()
         {
-                kernel = new float[3, 3] { { 0, -1, 0 }, { -1, 5, -1 }, { 0, -1, 0 } };
+            kernel = new float[3, 3] { { 0, -1, 0 }, { -1, 5, -1 }, { 0, -1, 0 } };
+        }
+    };
+    class Sharp : MatrixFilter
+    {
+        public Sharp()
+        {
+            kernel = new float[3, 3] { { -1, -1, -1 }, { -1, 9, -1 }, { -1, -1, -1 } };
         }
     };
 }
