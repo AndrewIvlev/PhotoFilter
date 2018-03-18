@@ -12,6 +12,7 @@ namespace PhotoFilter
     public partial class PhotoFilter : Form
     {
         Bitmap image;
+        int[,] kernel = null;
 
         public PhotoFilter()
         {
@@ -22,7 +23,7 @@ namespace PhotoFilter
         {
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Filter = "Image files | *.png; *.jpg; *.bmp | All Files (*.*) | *.*";
-            dialog.Title = "Save an Image File"; 
+            dialog.Title = "Save an Image File";
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 image = new Bitmap(dialog.FileName);
@@ -31,8 +32,8 @@ namespace PhotoFilter
             }
             PhotoFilter.ActiveForm.Height = image.Height + 100;
             PhotoFilter.ActiveForm.Width = image.Width + 39;
-          //  pictureBox1.Height = image.Height;
-           // pictureBox1.Width = image.Width;
+            //  pictureBox1.Height = image.Height;
+            // pictureBox1.Width = image.Width;
         }
 
         private void сохранитьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -40,26 +41,26 @@ namespace PhotoFilter
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.Filter = "Image files | *.png; *.jpg; *.bmp | All Files (*.*) | *.*";
             dialog.ShowDialog();
-            if (dialog.FileName != "")  
-            {  
+            if (dialog.FileName != "")
+            {
                 System.IO.FileStream fs =
                     (System.IO.FileStream)dialog.OpenFile();
-                switch (dialog.FilterIndex)  
-                {  
-                    case 1 :
-                        this.pictureBox1.Image.Save(fs, 
-                            System.Drawing.Imaging.ImageFormat.Png); break;  
+                switch (dialog.FilterIndex)
+                {
+                    case 1:
+                        this.pictureBox1.Image.Save(fs,
+                            System.Drawing.Imaging.ImageFormat.Png); break;
 
-                    case 2 :
-                        this.pictureBox1.Image.Save(fs,   
-                            System.Drawing.Imaging.ImageFormat.Jpeg); break;  
+                    case 2:
+                        this.pictureBox1.Image.Save(fs,
+                            System.Drawing.Imaging.ImageFormat.Jpeg); break;
 
-                    case 3 :
-                        this.pictureBox1.Image.Save(fs,   
-                            System.Drawing.Imaging.ImageFormat.Bmp); break;  
-                }  
-            fs.Close();  
-            } 
+                    case 3:
+                        this.pictureBox1.Image.Save(fs,
+                            System.Drawing.Imaging.ImageFormat.Bmp); break;
+                }
+                fs.Close();
+            }
         }
         private void инверсияToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -72,7 +73,7 @@ namespace PhotoFilter
             Bitmap newImage = ((Filters)e.Argument).processImage(image, backgroundWorker1);
             if (backgroundWorker1.CancellationPending != true)
                 image = newImage;
-            newImage.Dispose();
+            //  newImage.Dispose();
         }
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -155,7 +156,14 @@ namespace PhotoFilter
             backgroundWorker1.RunWorkerAsync(filter);
         }
 
-        private void ПрюиттапоОсиYToolStripMenuItem_Click(object sender, EventArgs e)
+        private void PhotoFilter_Resize(object sender, EventArgs e)
+        {
+            progressBar2.Width = button1.Location.X - 25;
+            pictureBox1.Height = PhotoFilter.ActiveForm.Height;
+            pictureBox1.Width = PhotoFilter.ActiveForm.Width;
+        }
+
+        private void ПрюиттапоОсиYToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             Filters filter = new Prewitt(true);
             backgroundWorker1.RunWorkerAsync(filter);
@@ -167,11 +175,129 @@ namespace PhotoFilter
             backgroundWorker1.RunWorkerAsync(filter);
         }
 
-        private void PhotoFilter_Resize(object sender, EventArgs e)
+        private void медианныйToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            progressBar2.Width = button1.Location.X - 25;
-            pictureBox1.Height = PhotoFilter.ActiveForm.Height;
-            pictureBox1.Width = PhotoFilter.ActiveForm.Width;
+            Filters filter = new MedianFilter();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void светящиесяКраяToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new GlowingEdgesFilter();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void переносToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            Filters filter = new ShiftFilter();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void поворотToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new RotationFilter(image.Height / 2, image.Width / 2, Math.PI / 4);
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void волны1ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new Waves1Filter();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void волны2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new Waves2Filter();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void эффектСтеклаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new GlassFilter();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void motionBlurToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new MotionBlurFilter();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void серыйМирToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new GreyWorldFilter(image);
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void линейноеРастяжениеToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            Filters filter = new LiniarStretchingFilter(image);
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void dilationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new DilationOperation(kernel);
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void erosionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new ErosionOperation(kernel);
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void openingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new Opening(kernel);
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void closingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new Closing(kernel);
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void topHatToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new TopHatFilter(kernel);
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void структурныйЭлементToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            label1.Visible = true;
+            textBox1.Visible = true;
+        }
+        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                int size = Convert.ToInt32(textBox1.Text);
+                dataGridView1.ColumnCount = size;
+                dataGridView1.RowCount = size;
+                dataGridView1.Visible = true;
+            }
+        }
+        private void dataGridView1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                int size = Convert.ToInt32(textBox1.Text);
+                kernel = new int[size, size];
+                for (int i = 0; i < size; i++)
+                {
+                    for (int j = 0; j < size; j++)
+                    {
+                        kernel[i, j] = Convert.ToInt32(dataGridView1.Rows[i].Cells[j].Value);
+                    }
+                }
+                label1.Visible = false;
+                textBox1.Visible = false;
+                dataGridView1.Visible = false;
+            }
         }
     }
 }
