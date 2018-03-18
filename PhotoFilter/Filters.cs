@@ -1,22 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Drawing;
-using System.ComponentModel;
 
 namespace PhotoFilter
 {
     abstract class Filters
     {
-        public int Clamp(int value, int min, int max)
-        {
-            if (value < min)
-                return min;
-            if (value > max)
-                return max;
-            return value;
-        }
         protected abstract Color calculateNewPixelColor(Bitmap sourceImage, int x, int y);
 
         public Bitmap processImage(Bitmap sourceImage, BackgroundWorker worker)
@@ -31,8 +23,18 @@ namespace PhotoFilter
                 {
                     resultImage.SetPixel(i, j, calculateNewPixelColor(sourceImage, i, j));
                 }
+
             }
+
             return resultImage;
+        }
+        public int Clamp(int value, int min, int max)
+        {
+            if (value < min)
+                return min;
+            if (value > max)
+                return max;
+            return value;
         }
     };
     class InvertFilter : Filters
@@ -156,40 +158,68 @@ namespace PhotoFilter
         public SobelFilter(bool f)
         {
             if (f)
-                kernel = new float[3, 3] { { -1, -2, -1 }, { 0, 0, 0 }, { 1, 2, 1 } };
+                kernel = new float[,] {
+                    { -1, -2, -1 },
+                    { 0, 0, 0 },
+                    { 1, 2, 1 }
+                };
             else
-                kernel = new float[3, 3] { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 1 } };
+                kernel = new float[,] {
+                    { -1, 0, 1 },
+                    { -2, 0, 2 },
+                    { -1, 0, 1 }
+                };
         }
     };
-    class Pruitt: MatrixFilter
+    class Prewitt : MatrixFilter
     {
-        public Pruitt(bool f)
+        public Prewitt(bool f)
         {
             if (f)
-                kernel = new float[3, 3] { { -1, -2, -1 }, { 0, 0, 0 }, { 1, 2, 1 } };
+                kernel = new float[,] {
+                    { -1, -1, -1 },
+                    { 0, 0, 0 },
+                    { 1, 1, 1 }
+                };
             else
-                kernel = new float[3, 3] { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 1 } };
+                kernel = new float[,] {
+                    { -1, 0, 1 },
+                    { -1, 0, 1 },
+                    { -1, 0, 1 }
+                };
         }
     };
-    class Tisnenie : MatrixFilter
+    class Embossing : MatrixFilter
     {
-        public Tisnenie()
+        public Embossing()
         {
-            kernel = new float[3, 3] { { 0, 1, 0 }, { 1, 0, -1 }, { 0, -1, 0 } };
+            kernel = new float[,] {
+                { 0, 1, 0 },
+                { 1, 0, -1 },
+                { 0, -1, 0 }
+            };
         }
     };
     class Sharpen : MatrixFilter
     {
         public Sharpen()
         {
-            kernel = new float[3, 3] { { 0, -1, 0 }, { -1, 5, -1 }, { 0, -1, 0 } };
+            kernel = new float[,] {
+                { 0, -1, 0 },
+                { -1, 5, -1 },
+                { 0, -1, 0 }
+            };
         }
     };
     class Sharp : MatrixFilter
     {
         public Sharp()
         {
-            kernel = new float[3, 3] { { -1, -1, -1 }, { -1, 9, -1 }, { -1, -1, -1 } };
+            kernel = new float[,] {
+                { -1, -1, -1 },
+                { -1, 9, -1 },
+                { -1, -1, -1 }
+            };
         }
     };
 }

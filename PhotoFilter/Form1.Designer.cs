@@ -1,6 +1,6 @@
 ﻿namespace PhotoFilter
 {
-    partial class Form1
+    partial class PhotoFilter
     {
         /// <summary>
         /// Required designer variable.
@@ -61,9 +61,13 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(0, 27);
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox1.Location = new System.Drawing.Point(12, 27);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(720, 475);
+            this.pictureBox1.Size = new System.Drawing.Size(548, 339);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
@@ -75,7 +79,7 @@
             this.фильтрыToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(740, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(580, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -124,7 +128,7 @@
             this.сепияToolStripMenuItem,
             this.увеличитьЯркостьToolStripMenuItem});
             this.точеченыеToolStripMenuItem.Name = "точеченыеToolStripMenuItem";
-            this.точеченыеToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.точеченыеToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.точеченыеToolStripMenuItem.Text = "Точеченые";
             // 
             // инверсияToolStripMenuItem
@@ -166,7 +170,7 @@
             this.тиснениеToolStripMenuItem,
             this.операторПрюиттаToolStripMenuItem});
             this.матричныеToolStripMenuItem.Name = "матричныеToolStripMenuItem";
-            this.матричныеToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.матричныеToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.матричныеToolStripMenuItem.Text = "Матричные";
             // 
             // размытиеToolStripMenuItem
@@ -239,15 +243,14 @@
             // ПрюиттапоОсиYToolStripMenuItem
             // 
             this.ПрюиттапоОсиYToolStripMenuItem.Name = "ПрюиттапоОсиYToolStripMenuItem";
-            this.ПрюиттапоОсиYToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.ПрюиттапоОсиYToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.ПрюиттапоОсиYToolStripMenuItem.Text = "По оси Y";
             // 
             // ПрюиттапоОсиXToolStripMenuItem1
             // 
             this.ПрюиттапоОсиXToolStripMenuItem1.Name = "ПрюиттапоОсиXToolStripMenuItem1";
-            this.ПрюиттапоОсиXToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.ПрюиттапоОсиXToolStripMenuItem1.Size = new System.Drawing.Size(123, 22);
             this.ПрюиттапоОсиXToolStripMenuItem1.Text = "По оси X";
-            this.ПрюиттапоОсиXToolStripMenuItem1.Click += new System.EventHandler(this.поОсиXToolStripMenuItem1_Click);
             // 
             // backgroundWorker1
             // 
@@ -259,14 +262,16 @@
             // 
             // progressBar2
             // 
-            this.progressBar2.Location = new System.Drawing.Point(12, 508);
+            this.progressBar2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.progressBar2.Location = new System.Drawing.Point(12, 370);
             this.progressBar2.Name = "progressBar2";
-            this.progressBar2.Size = new System.Drawing.Size(639, 23);
+            this.progressBar2.Size = new System.Drawing.Size(466, 23);
             this.progressBar2.TabIndex = 3;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(657, 508);
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(496, 370);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 4;
@@ -274,18 +279,19 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // Form1
+            // PhotoFilter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(740, 534);
+            this.ClientSize = new System.Drawing.Size(580, 399);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.progressBar2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "PhotoFilter";
+            this.Text = "PhotoFilter";
+            this.Resize += new System.EventHandler(this.PhotoFilter_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

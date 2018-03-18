@@ -6,14 +6,14 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-//using System.Security.Permissions.FileIOPermission;
 
 namespace PhotoFilter
 {
-    public partial class Form1 : Form
+    public partial class PhotoFilter : Form
     {
         Bitmap image;
-        public Form1()
+
+        public PhotoFilter()
         {
             InitializeComponent();
         }
@@ -26,10 +26,15 @@ namespace PhotoFilter
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 image = new Bitmap(dialog.FileName);
+                pictureBox1.Image = image;
+                pictureBox1.Refresh();
             }
-            pictureBox1.Image = image;
-            pictureBox1.Refresh();
+            PhotoFilter.ActiveForm.Height = image.Height + 100;
+            PhotoFilter.ActiveForm.Width = image.Width + 39;
+          //  pictureBox1.Height = image.Height;
+           // pictureBox1.Width = image.Width;
         }
+
         private void сохранитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog();
@@ -53,7 +58,6 @@ namespace PhotoFilter
                         this.pictureBox1.Image.Save(fs,   
                             System.Drawing.Imaging.ImageFormat.Bmp); break;  
                 }  
-
             fs.Close();  
             } 
         }
@@ -68,6 +72,7 @@ namespace PhotoFilter
             Bitmap newImage = ((Filters)e.Argument).processImage(image, backgroundWorker1);
             if (backgroundWorker1.CancellationPending != true)
                 image = newImage;
+            newImage.Dispose();
         }
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -146,20 +151,27 @@ namespace PhotoFilter
 
         private void тиснениеToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Filters filter = new Tisnenie();
+            Filters filter = new Embossing();
             backgroundWorker1.RunWorkerAsync(filter);
         }
 
         private void ПрюиттапоОсиYToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Filters filter = new Pruitt(true);
+            Filters filter = new Prewitt(true);
             backgroundWorker1.RunWorkerAsync(filter);
         }
 
         private void ПрюиттапоОсиXToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Filters filter = new Pruitt(false);
+            Filters filter = new Prewitt(false);
             backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void PhotoFilter_Resize(object sender, EventArgs e)
+        {
+            progressBar2.Width = button1.Location.X - 25;
+            pictureBox1.Height = PhotoFilter.ActiveForm.Height;
+            pictureBox1.Width = PhotoFilter.ActiveForm.Width;
         }
     }
 }
